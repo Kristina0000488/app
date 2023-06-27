@@ -6,14 +6,14 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./form.component.less'],
 })
 export class FormComponent {
-  public src: string = '';
+  public src = '';
 
   @Output()
-  onSubmit = new EventEmitter<string>();
+  addBlock = new EventEmitter<string>();
 
-  handleSubmit(): void {
+  handleSubmit() {
     if (this.src.length > 1) {
-      this.onSubmit.emit(this.src);
+      this.addBlock.emit(this.src);
 
       this.src = '';
     }

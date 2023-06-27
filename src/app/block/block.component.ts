@@ -26,7 +26,7 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
   _value = {} as dragAndDropsTypes.Target;
   urlSafe: SafeResourceUrl = '';
   typeLink: 'video' | 'img' | 'iframe';
-  DragDrop: any;
+  target?: DragAndDrop;
 
   @ViewChild('blockDiv', { static: false, read: ElementRef })
   public blockDiv: ElementRef;
@@ -42,26 +42,26 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
   }
 
   @Output()
-  onChange = new EventEmitter<{ obj: dragAndDropsTypes.BlockProps }>();
+  changeState = new EventEmitter<{ obj: dragAndDropsTypes.BlockProps }>();
 
   @Output()
-  onRemove = new EventEmitter<number>();
+  remove = new EventEmitter<number>();
 
-  onDelete(): void {
-    this.onRemove.emit(this._value.id);
+  onDelete() {
+    this.remove.emit(this._value.id);
   }
 
-  ngAfterViewInit(): void {
-    this.DragDrop = new DragAndDrop(
+  ngAfterViewInit() {
+    this.target = new DragAndDrop(
       this.blockDiv,
       (obj: dragAndDropsTypes.DivProps) =>
-        this.onChange.emit({ obj: { ...this._value, ...obj } })
+        this.changeState.emit({ obj: { ...this._value, ...obj } })
     );
 
-    this.DragDrop.init();
+    this.target.init();
   }
 
-  ngOnDestroy(): void {
-    this.DragDrop.destroy();
+  ngOnDestroy() {
+    this.target?.destroy();
   }
 }

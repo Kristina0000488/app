@@ -21,7 +21,7 @@ export class AppComponent {
   public blocks: dragAndDropsTypes.Target[] = [];
   public params = [] as paramsType[];
 
-  onSubmited(src: string): void {
+  addBlock(src: string) {
     const block: Partial<dragAndDropsTypes.Target> = {
       id: this.blocks.length + 1,
       src,
@@ -42,7 +42,7 @@ export class AppComponent {
     }
   }
 
-  onChange(obj: paramsType): void {
+  changeState(obj: paramsType) {
     const index = this.params.findIndex(val => obj.id === val.id);
 
     if (index !== -1) {
@@ -52,12 +52,12 @@ export class AppComponent {
     }
   }
 
-  onRemove(id: number): void {
+  remove(id: number) {
     this.blocks = [...this.blocks].filter(block => block.id !== id);
     this.params = [...this.params].filter(block => block.id !== id);
   }
 
-  onClick(): void {
+  click() {
     console.log(this.params);
   }
 }

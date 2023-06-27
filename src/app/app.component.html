@@ -1,12 +1,12 @@
 <div #appContainer class="app-container">
   <div class="panel">
-    <app-form (onSubmit)="onSubmited($event)"></app-form>
-    <button (click)="onClick()">Show</button>
+    <app-form (addBlock)="addBlock($event)"></app-form>
+    <button (click)="click()">Show</button>
   </div>
   <div *ngFor="let item of blocks">
     <app-block
-      (onRemove)="onRemove($event)"
-      (onChange)="onChange($event.obj)"
+      (remove)="remove($event)"
+      (changeState)="changeState($event.obj)"
       [value]="item"></app-block>
   </div>
 </div>

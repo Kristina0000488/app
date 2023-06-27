@@ -3,11 +3,11 @@ import { ElementRef } from '@angular/core';
 
 export class DragAndDrop {
   blockDiv: ElementRef;
-  isMoved: boolean = false;
-  observer: any;
+  isMoved = false;
+  observer: ResizeObserver;
   divOptions = {} as DivProps;
   mousePosition: { x: number; y: number } = { x: 0, y: 0 };
-  isDown: boolean = false;
+  isDown = false;
   offset: number[] = [0, 0];
   callback: (obj: DivProps) => void;
 
@@ -19,12 +19,12 @@ export class DragAndDrop {
   init() {
     this.blockDiv?.nativeElement.addEventListener(
       'mousedown',
-      this.#privateStartMove.bind(this)
+      this.startMove.bind(this)
     );
-    document.addEventListener('mousemove', this.#privateMove.bind(this));
+    document.addEventListener('mousemove', this.move.bind(this));
     this.blockDiv?.nativeElement.addEventListener(
       'mouseup',
-      this.#privateEndMove.bind(this)
+      this.endMove.bind(this)
     );
 
     this.observer = new ResizeObserver(entries => {
@@ -43,7 +43,7 @@ export class DragAndDrop {
     this.observer.observe(this.blockDiv.nativeElement);
   }
 
-  #privateStartMove(event: MouseEvent) {
+  private startMove(event: MouseEvent) {
     const div = this.blockDiv.nativeElement;
 
     this.isDown = true;
@@ -57,16 +57,16 @@ export class DragAndDrop {
       const rectX = div?.getBoundingClientRect().left || 0;
       const rectY = div?.getBoundingClientRect().top || 0;
 
-      const width = div?.offsetWidth;
-      const height = div?.offsetHeight;
+      const width = div?.offsetWidth || 0;
+      const height = div?.offsetHeight || 0;
 
       const x = event.clientX - rectX;
       const y = event.clientY - rectY;
 
       const step = 15;
 
-      const blockedX = [width! - step, width || 0];
-      const blockedY = [height! - step, height || 0];
+      const blockedX = [width - step, width];
+      const blockedY = [height - step, height];
 
       if (
         x > blockedX[0] &&
@@ -85,7 +85,7 @@ export class DragAndDrop {
     }
   }
 
-  #privateMove(event: MouseEvent) {
+  private move(event: MouseEvent) {
     event.preventDefault();
 
     const div = this.blockDiv.nativeElement;
@@ -131,7 +131,7 @@ export class DragAndDrop {
     }
   }
 
-  #privateEndMove() {
+  private endMove() {
     this.isDown = false;
   }
 
@@ -146,12 +146,12 @@ export class DragAndDrop {
 
     this.blockDiv?.nativeElement.removeEventListener(
       'mousedown',
-      this.#privateStartMove.bind(this)
+      this.startMove.bind(this)
     );
-    document.removeEventListener('mousemove', this.#privateMove.bind(this));
+    document.removeEventListener('mousemove', this.move.bind(this));
     this.blockDiv?.nativeElement.removeEventListener(
       'mouseup',
-      this.#privateEndMove.bind(this)
+      this.endMove.bind(this)
     );
   }
 }
