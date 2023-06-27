@@ -1,0 +1,18 @@
+<div #blockDiv *ngIf="typeLink; in: ['img', 'video', 'iframe']" class="block">
+  <button (click)="onDelete()">remove</button>
+  <img
+    *ngIf="typeLink === 'img'"
+    [src]="urlSafe"
+    width="100%"
+    height="100%"
+    alt="image" />
+  <video *ngIf="typeLink === 'video'" muted autoplay loop style="width: 100%">
+    <source [src]="urlSafe" type="video/mp4" />
+  </video>
+  <iframe
+    *ngIf="typeLink === 'iframe'"
+    width="100%"
+    height="100%"
+    [src]="urlSafe">
+  </iframe>
+</div>
