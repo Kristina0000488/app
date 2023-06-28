@@ -34,7 +34,7 @@ export class DragAndDrop {
         ...this.divOptions,
         width,
         height,
-        ...this.#privateGetXY(this.blockDiv),
+        ...this.GetXY(this.blockDiv),
       };
 
       this.callback({ ...this.divOptions });
@@ -124,7 +124,7 @@ export class DragAndDrop {
 
       this.divOptions = {
         ...this.divOptions,
-        ...this.#privateGetXY(this.blockDiv),
+        ...this.GetXY(this.blockDiv),
       };
 
       this.callback({ ...this.divOptions });
@@ -135,7 +135,7 @@ export class DragAndDrop {
     this.isDown = false;
   }
 
-  #privateGetXY(elem: ElementRef): { x: number; y: number } {
+  private GetXY(elem: ElementRef): { x: number; y: number } {
     const { top, left } = elem.nativeElement.getBoundingClientRect();
 
     return { x: left, y: top };
